@@ -5,16 +5,30 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
-
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { Poppins_400Regular, Poppins_500Medium, Poppins_700Bold } from '@expo-google-fonts/poppins';
+import { NativeBaseProvider } from 'native-base';
+import { Text } from 'react-native';
+import { CormorantGaramond_400Regular, CormorantGaramond_500Medium_Italic, CormorantGaramond_600SemiBold } from '../node_modules/@expo-google-fonts/cormorant-garamond/index';
+import { ZillaSlab_400Regular, ZillaSlab_500Medium, ZillaSlab_600SemiBold } from '../node_modules/@expo-google-fonts/zilla-slab/index';
+import { Alegreya_400Regular } from '../node_modules/@expo-google-fonts/alegreya/index';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
+  
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    Poppins_400Regular,
+    Poppins_500Medium,
+    Poppins_700Bold,
+    CormorantGaramond_400Regular,
+    CormorantGaramond_600SemiBold,
+    CormorantGaramond_500Medium_Italic,
+    ZillaSlab_400Regular,
+    ZillaSlab_600SemiBold,
+    Alegreya_400Regular
   });
 
   useEffect(() => {
@@ -24,16 +38,17 @@ export default function RootLayout() {
   }, [loaded]);
 
   if (!loaded) {
-    return null;
+    return <Text>Loading...</Text>;
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
+    <NativeBaseProvider>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <Stack screenOptions={{
+          headerShown : false
+        }}  />
+        <StatusBar style="auto" />
     </ThemeProvider>
+    </NativeBaseProvider>
   );
 }
